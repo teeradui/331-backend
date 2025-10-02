@@ -14,7 +14,13 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class OrganizerController {
-    private final OrganizerService organizerService;
+    final OrganizerService organizerService;
+    @GetMapping("/organizer")
+    ResponseEntity<?> getOrganizers() {
+        return ResponseEntity.ok(organizerService.getAllOrganizers());
+    }
+
+    /*private final OrganizerService organizerService;
 
     // GET /organizers?_limit=2&_page=1
     @GetMapping("/organizers")
@@ -49,5 +55,5 @@ public class OrganizerController {
         return ResponseEntity
                 .created(URI.create("/organizers/" + saved.getId()))
                 .body(saved);
-    }
+    }*/
 }

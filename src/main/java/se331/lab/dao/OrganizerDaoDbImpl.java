@@ -1,4 +1,4 @@
-package se331.lab.dao;
+/*package se331.lab.dao;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -34,4 +34,4 @@ public class OrganizerDaoDbImpl implements OrganizerDao {
     public Organizer save(Organizer o) {
         return repo.save(o);
     }
-}
+}*/
