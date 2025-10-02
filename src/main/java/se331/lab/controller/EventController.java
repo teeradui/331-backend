@@ -13,6 +13,7 @@ import se331.lab.entity.Event;
 
 import jakarta.annotation.PostConstruct;
 import se331.lab.service.EventService;
+import se331.lab.util.LabMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +34,14 @@ final EventService eventService;
         }
         HttpHeaders resonseHeaders = new HttpHeaders();
         resonseHeaders.set("x-total-count", String.valueOf(pageOutput.getTotalElements()));
-        return new ResponseEntity<>(pageOutput.getContent(), resonseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(LabMapper.INSTANCE.getEventDto(pageOutput.getContent()), resonseHeaders, HttpStatus.OK);
     }
 
     @GetMapping("events/{id}")
     public ResponseEntity<?> getEvent(@PathVariable ("id") Long id) {
         Event output = eventService.getEvent(id);
         if (output != null) {
-            return ResponseEntity.ok(output);
+            return ResponseEntity.ok(LabMapper.INSTANCE.getEventDto(output));
         }else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"The given id is not found");
         }
@@ -49,7 +50,7 @@ final EventService eventService;
     @PostMapping("/events")
     public ResponseEntity<?> addEvent(@RequestBody Event event) {
         Event output = eventService.save(event);
-        return ResponseEntity.ok(output);
+        return ResponseEntity.ok(LabMapper.INSTANCE.getEventDto(output));
     }
 
 }

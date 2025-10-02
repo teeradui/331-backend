@@ -40,7 +40,7 @@ public class OrganizerController {
         return ResponseEntity.ok(o);
     }
 
-    @PostMapping("/organizers")
+    /*@PostMapping("/organizers")
     public ResponseEntity<Organizer> createOrganizer(@RequestBody Organizer body) {
         if (body.getOrganizationName() == null || body.getOrganizationName().isBlank()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "organizationName is required");
@@ -49,5 +49,5 @@ public class OrganizerController {
         return ResponseEntity
                 .created(URI.create("/organizers/" + saved.getId()))
                 .body(saved);
-    }
+    }*/
 }
