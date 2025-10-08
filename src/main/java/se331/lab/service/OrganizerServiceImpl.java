@@ -9,6 +9,7 @@ import se331.lab.dao.OrganizerDao;
 import se331.lab.entity.Organizer;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +26,17 @@ public class OrganizerServiceImpl implements OrganizerService {
     public Page<Organizer> getOrganizer(Integer page, Integer pageSize) {
         return organizerDao.getOrganizer(PageRequest.of(page, pageSize));
     }
+
+    @Override
+    public Optional<Organizer> getById(Long id) {
+        return organizerDao.findById(id);
+    }
+
+    @Override
+    public Organizer save(Organizer organizer) {
+        return organizerDao.save(organizer);
+    }
+
 
     /*@Override
     public Integer getOrganizerCount() {

@@ -1,5 +1,6 @@
 package se331.lab.entity;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class EventDTO {
+public class EventParticipantDTO {
     Long id;
     String category;
     String title;
@@ -18,5 +19,5 @@ public class EventDTO {
     String date;
     String time;
     Boolean petAllowed;
-    EventOrganizerDTO organizer;
+    // Don't include participants list here to avoid circular reference
 }

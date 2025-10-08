@@ -1,17 +1,17 @@
 package se331.lab.entity;
 
-import jakarta.persistence.*;
 import lombok.*;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-/*@Table(name = "organizers")*/
+
 public class Organizer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +20,6 @@ public class Organizer {
     String name;
     @OneToMany(mappedBy = "organizer")
     @Builder.Default
-    List<Event> ownEvents = new ArrayList<>();
+    List<Event> ownEvents =  new ArrayList<>();
 
-
-    /*public Long id;
-    public String organizationName;
-    public String address;*/
 }

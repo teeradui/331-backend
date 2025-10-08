@@ -1,8 +1,10 @@
 package se331.lab.entity;
+
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+
 
 @Data
 @Builder
@@ -12,7 +14,6 @@ import java.util.List;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Exclude
     Long id;
     String category;
     String title;
@@ -20,9 +21,9 @@ public class Event {
     String location;
     String date;
     String time;
-    Boolean petsAllowed;
+    Boolean petAllowed;
     @ManyToOne
     Organizer organizer;
-    @ManyToMany(mappedBy = "eventHistory")
+    @ManyToMany(mappedBy ="eventHistory")
     List<Participant> participants;
 }

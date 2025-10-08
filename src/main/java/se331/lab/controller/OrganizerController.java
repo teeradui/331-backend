@@ -7,17 +7,35 @@ import org.springframework.web.bind.annotation.*;
 import se331.lab.entity.Organizer;
 import se331.lab.service.OrganizerService;
 import org.springframework.web.server.ResponseStatusException;
+import se331.lab.util.LabMapper;
 
 import java.net.URI;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping
 public class OrganizerController {
     final OrganizerService organizerService;
-    @GetMapping("/organizer")
+
+    @GetMapping("/organizers")
     ResponseEntity<?> getOrganizers() {
-        return ResponseEntity.ok(organizerService.getAllOrganizers());
+        return ResponseEntity.ok(LabMapper.INSTANCE.getOrganizerDTO(organizerService.getAllOrganizers()));
+    }
+
+    @GetMapping("/organizers/{id}")
+    ResponseEntity<?> getOrganizer(@PathVariable Long id) {
+        return organizerService
+                .getById(id) // ต้องมีใน service/dao
+                .map(o -> ResponseEntity.ok(LabMapper.INSTANCE.getOrganizerDTO(o)))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Organizer not found"));
+    }
+
+    @PostMapping("/organizers")
+    ResponseEntity<?> createOrganizer(@RequestBody Organizer body) {
+        Organizer saved = organizerService.save(body); // ต้องมีใน service/dao
+        return ResponseEntity.created(URI.create("/organizers/" + saved.getId()))
+                .body(LabMapper.INSTANCE.getOrganizerDTO(saved));
     }
 
     /*private final OrganizerService organizerService;

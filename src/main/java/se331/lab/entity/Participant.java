@@ -1,26 +1,27 @@
 package se331.lab.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class Participant {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Exclude
-
     Long id;
     String name;
     String telNo;
+
     @ManyToMany
-    List<Event> eventHistory;
+    @Builder.Default
+    @JsonIgnoreProperties("participant")
+    List<Event> eventHistory = new ArrayList<>();
 }
