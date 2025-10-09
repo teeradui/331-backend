@@ -17,6 +17,7 @@ import java.util.List;
 public class EventDaoImpl implements EventDao{
     final EventRepository eventRepository;
 
+
     @Override
     public  Integer getEventSize() {
         return  Math.toIntExact(eventRepository.count());
@@ -38,7 +39,18 @@ public class EventDaoImpl implements EventDao{
     }
 
     @Override
-    public Page<Event> getEvents(String title, Pageable page) {
-        return eventRepository.findByTitleContainingOrDescriptionContaining(title, title, page);
+    public Page<Event> getEvents(String title,String description, String organizer, Pageable page) {
+        return eventRepository.findByTitleIgnoreCaseContainingOrDescriptionIgnoreCaseContainingOrOrganizerNameIgnoreCaseContaining(title, description, organizer, page);
     }
+
+    @Override
+    public Page<Event> getEventsOr(String q, Pageable page) {
+        return eventRepository.findByTitleContainingOrDescriptionContaining(q, q, page);
+    }
+
+    @Override
+    public Page<Event> getEventsAnd(String title, Pageable page) {
+        return eventRepository.findByTitleContainingAndDescriptionContaining(title, title, page);
+    }
+
 }

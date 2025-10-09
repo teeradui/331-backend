@@ -11,6 +11,8 @@ public interface EventService {
     Page<Event> getEvents(Integer pageSize, Integer page);
     Event getEvent(Long id);
     Event save(Event event);
-    Page<Event> getEvents(String title, Pageable pageable);
+    Page<Event> getEvents(String title,String description, String organizer, Pageable pageable);
+    Page<Event> searchOr(String q, Pageable pageable);
+    Page<Event> searchAnd(String q, Pageable pageable);
 }
 

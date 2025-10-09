@@ -23,14 +23,18 @@ import java.util.List;
 public class EventController {
 final EventService eventService;
     @GetMapping("events")
-    public ResponseEntity<?> getEventLists(@RequestParam(value = "_limit", required = false) Integer perPage, @RequestParam(value = "_page", required = false) Integer page, @RequestParam(value = "title", required = false) String title) {
+    public ResponseEntity<?> getEventLists(@RequestParam(value = "_limit", required = false) Integer perPage,
+                                           @RequestParam(value = "_page", required = false) Integer page,
+                                           @RequestParam(value = "title", required = false) String title,
+                                           @RequestParam(value = "description", required = false) String description,
+                                           @RequestParam(value = "organizer", required = false) String organizer) {
         perPage = perPage == null ? 3 : perPage;
         page = page == null ? 1 : page;
         Page<Event> pageOutput;
-        if (title == null) {
+        if (title == null && description == null && organizer == null) {
             pageOutput = eventService.getEvents(perPage, page);
         } else {
-            pageOutput = eventService.getEvents(title, PageRequest.of(page - 1, perPage));
+            pageOutput = eventService.getEvents(title, description,organizer, PageRequest.of(page - 1, perPage));
         }
         HttpHeaders resonseHeaders = new HttpHeaders();
         resonseHeaders.set("x-total-count", String.valueOf(pageOutput.getTotalElements()));
@@ -53,4 +57,27 @@ final EventService eventService;
         return ResponseEntity.ok(LabMapper.INSTANCE.getEventDto(output));
     }
 
+    @GetMapping("events/search/or")
+    public ResponseEntity<?> searchEventsOr(
+            @RequestParam("q") String q,
+            @RequestParam(value = "size", defaultValue = "5") int size,
+            @RequestParam(value = "page", defaultValue = "0") int page
+    ) {
+        Page<Event> result = eventService.searchOr(q, PageRequest.of(page, size));
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("x-total-count", String.valueOf(result.getTotalElements()));
+        return new ResponseEntity<>(LabMapper.INSTANCE.getEventDto(result.getContent()), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("events/search/and")
+    public ResponseEntity<?> searchEventsAnd(
+            @RequestParam("q") String q,
+            @RequestParam(value = "size", defaultValue = "5") int size,
+            @RequestParam(value = "page", defaultValue = "0") int page
+    ) {
+        Page<Event> result = eventService.searchAnd(q, PageRequest.of(page, size));
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("x-total-count", String.valueOf(result.getTotalElements()));
+        return new ResponseEntity<>(LabMapper.INSTANCE.getEventDto(result.getContent()), headers, HttpStatus.OK);
+    }
 }

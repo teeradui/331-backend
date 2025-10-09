@@ -48,7 +48,19 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public Page<Event> getEvents (String title, Pageable pageable) {
-        return eventDao.getEvents(title, pageable);
+    public Page<Event> getEvents (String title,String description, String organizer, Pageable pageable) {
+        return eventDao.getEvents(title, description,organizer, pageable);
+    }
+
+    @Override
+    public Page<Event> searchOr(String q, Pageable pageable) {
+        // เรียกใช้ DAO ที่ทำ OR (ต้องมีใน EventDao / EventDaoImpl/DbImpl ตามที่เพิ่มไว้ก่อนหน้า)
+        return eventDao.getEventsOr(q, pageable);
+    }
+
+    @Override
+    public Page<Event> searchAnd(String q, Pageable pageable) {
+        // เรียกใช้ DAO ที่ทำ AND
+        return eventDao.getEventsAnd(q, pageable);
     }
 }
